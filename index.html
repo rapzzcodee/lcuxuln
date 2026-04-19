@@ -2,182 +2,189 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SafeCheck by Rapz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>SC | Rapz</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/twemoji@14.0.2/dist/twemoji.min.js"></script>
     <style>
-        :root { --bg-color: #030303; }
         body { 
-            font-family: 'SF Pro Display', -apple-system, sans-serif; 
-            background: var(--bg-color);
-            color: white;
-            user-select: none;
-            margin: 0;
-            overflow-x: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro", sans-serif;
+            background: #000; color: white; margin: 0; overflow: hidden;
         }
 
-        /* ANIMATED BACKGROUND */
-        .mesh-gradient {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -1;
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(0, 122, 255, 0.2) 0px, transparent 45%),
-                radial-gradient(at 100% 0%, rgba(88, 86, 214, 0.2) 0px, transparent 45%),
-                radial-gradient(at 50% 50%, rgba(255, 45, 85, 0.05) 0px, transparent 50%);
-            filter: blur(60px);
-            animation: meshMove 20s ease infinite alternate;
-        }
-        @keyframes meshMove {
-            0% { transform: scale(1) rotate(0deg); }
-            100% { transform: scale(1.1) rotate(2deg); }
+        .emoji {
+            display: inline-block;
+            width: 1.2em;
+            height: 1.2em;
+            vertical-align: -0.2em;
+            margin: 0 0.1em;
         }
 
-        /* GLASSMORPHISM */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(25px) saturate(180%);
-            -webkit-backdrop-filter: blur(25px) saturate(180%);
+        .bg-gradient {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: radial-gradient(circle at 50% -20%, #1c1c1e, #000);
+        }
+
+        #island {
+            position: fixed; top: 12px; left: 50%;
+            transform: translateX(-50%) scale(0.7);
+            width: 125px; height: 36px; background: #000;
+            border-radius: 50px; z-index: 9999; opacity: 0;
+            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1.4);
+            border: 0.5px solid rgba(255,255,255,0.15);
+        }
+        #island.expand {
+            opacity: 1; width: calc(100% - 32px); max-width: 390px;
+            height: auto; top: 20px; transform: translateX(-50%) scale(1);
+            padding: 24px; border-radius: 38px;
+        }
+
+        .marquee-container {
+            width: 100%; overflow: hidden; white-space: nowrap; margin-top: 10px;
+        }
+        .marquee-text {
+            display: inline-block;
+            animation: marquee 12s linear infinite;
+            font-size: 10px; font-weight: 800; color: #FF3B30;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .glass-box {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(40px) saturate(210%);
+            -webkit-backdrop-filter: blur(40px) saturate(210%);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 48px;
         }
 
-        /* SHIMMER EFFECT */
-        .shimmer-text {
-            background: linear-gradient(90deg, #fff, #666, #fff);
+        .shimmer {
+            background: linear-gradient(90deg, #fff 0%, #555 50%, #fff 100%);
             background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: shine 4s linear infinite;
         }
         @keyframes shine { to { background-position: 200% center; } }
-
-        /* RESPONSIVE SCALE */
-        @media (max-width: 640px) {
-            .main-container { transform: scale(0.95); }
-            h1 { font-size: 4rem !important; }
-        }
+        
+        .btn-tap:active { transform: scale(0.92); transition: 0.1s; }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen">
 
-    <div class="mesh-gradient"></div>
+    <div class="bg-gradient"></div>
 
-    <div id="securityModal" class="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/70 hidden backdrop-blur-xl">
-        <div class="glass-card w-full max-w-[320px] rounded-[35px] overflow-hidden animate-in fade-in zoom-in duration-300 shadow-2xl">
-            <div class="p-8 text-center">
-                <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-5 border border-white/20">
-                    <span class="text-3xl font-bold italic shimmer-text">R</span>
-                </div>
-                <h3 class="text-xl font-bold tracking-tight">Rapz Security</h3>
-                <p class="text-[12px] text-gray-400 mt-3 leading-relaxed">
-                    Waspada typo domain seperti <b>gmaii.com</b>. Pastikan cek keaslian akun sebelum bertransaksi!
-                </p>
-                <a href="https://whatsapp.com/channel/0029VbCXhPGLI8YdXdUg7s27" target="_blank" class="mt-6 block w-full py-4 bg-white text-black rounded-2xl font-bold text-[11px] active:scale-95 transition-transform shadow-lg shadow-white/10">
-                    JOIN WA CHANNEL
-                </a>
+    <div id="island" class="flex flex-col items-center">
+        <div id="islandContent" class="hidden text-center w-full">
+            <div class="w-12 h-12 bg-white text-black rounded-[14px] flex items-center justify-center mx-auto mb-4 font-black italic shadow-2xl">R</div>
+            <p class="text-[11px] font-semibold text-gray-300 mb-5 px-2 tracking-tight">
+                Waspada akun bind ❌ gmaii.com. Cek domain resmi ✅ gmail.com sebelum payment!
+            </p>
+            <div class="flex gap-2">
+                <a href="https://whatsapp.com/channel/0029VbCXhPGLI8YdXdUg7s27" class="flex-1 py-3.5 bg-white text-black rounded-[18px] font-bold text-[10px] btn-tap text-center">CHANNEL 💬</a>
+                <button onclick="closeIsland()" class="flex-1 py-3.5 bg-white/10 rounded-[18px] font-bold text-[10px] text-white btn-tap">OK 👍</button>
             </div>
-            <button onclick="closeModal()" class="w-full py-5 border-t border-white/5 text-gray-500 font-bold text-[10px] uppercase tracking-widest hover:text-white transition-colors">Continue</button>
         </div>
     </div>
 
-    <div class="main-container w-full max-w-lg px-6 py-12 space-y-10 relative">
-        <div class="text-center space-y-4">
-            <h1 class="text-7xl md:text-8xl font-black tracking-tighter italic shimmer-text">SafeCheck.</h1>
-            <div class="inline-flex items-center px-5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20">
-                <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse mr-3"></span>
-                <p class="text-[10px] font-black tracking-[0.3em] text-blue-400 uppercase">Rapz Infrastructure</p>
+    <main class="w-full max-w-sm px-6">
+        <div class="text-center mb-10">
+            <h1 class="text-[110px] font-black italic tracking-tighter leading-none shimmer mb-1">SC.</h1>
+            <p class="text-[9px] tracking-[0.6em] font-extrabold text-blue-500 uppercase opacity-90">Rapz Security</p>
+            
+            <div class="marquee-container">
+                <span class="marquee-text italic">
+                    ⚠️ PERINGATAN: HARAP BERHATI-HATI SAAT MEMBELI AKUN BIND ON, PASTIKAN DOMAIN ADALAH GMAIL.COM BUKAN DOMAIN PALSU SEPERTI GMAII.COM! 🛑
+                </span>
             </div>
         </div>
 
-        <div class="glass-card rounded-[50px] p-2 shadow-2xl overflow-hidden">
-            <div class="bg-black/20 rounded-[48px] p-6 md:p-10 space-y-8">
-                <div class="relative group">
-                    <input 
-                        type="text" id="emailInput" placeholder="Enter target email..."
-                        class="w-full p-6 rounded-[28px] bg-white/5 border border-white/10 outline-none text-lg font-medium text-white placeholder-gray-600 focus:border-blue-500/50 transition-all shadow-inner"
-                        spellcheck="false"
-                        autocomplete="off"
-                    >
-                </div>
+        <div class="glass-box p-2 shadow-2xl">
+            <div class="bg-black/40 rounded-[44px] p-6 md:p-8 space-y-8">
+                <input 
+                    type="text" id="email" placeholder="Cek Email Target... 🔍"
+                    class="w-full p-5 rounded-[24px] bg-white/5 border border-transparent outline-none text-lg font-bold text-white placeholder-gray-700 focus:bg-white/10 transition-all btn-tap"
+                    spellcheck="false" autocomplete="off"
+                >
 
-                <div id="resultBox" class="hidden animate-in slide-in-from-bottom-5 duration-500">
-                    <div id="cardColor" class="relative overflow-hidden p-8 rounded-[38px] border-none transition-all duration-700 shadow-2xl">
-                        <div id="glow" class="absolute -top-24 -right-24 w-56 h-56 blur-[90px] opacity-40"></div>
-                        
-                        <div class="relative z-10 space-y-5">
+                <div id="result" class="hidden transition-all duration-500 transform translate-y-4 opacity-0">
+                    <div id="statusCard" class="relative overflow-hidden p-8 rounded-[38px] shadow-2xl">
+                        <div id="glow" class="absolute -top-10 -right-10 w-32 h-32 blur-[60px] opacity-40"></div>
+                        <div class="relative z-10 flex flex-col space-y-4">
                             <div class="flex justify-between items-center">
-                                <span id="label" class="text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-xl"></span>
-                                <span id="domainVal" class="text-[11px] font-mono font-bold opacity-30"></span>
+                                <span id="badge" class="text-[8px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full"></span>
+                                <span id="domainDisplay" class="text-[10px] font-mono font-bold opacity-30 tracking-tighter"></span>
                             </div>
-                            <div>
-                                <h2 id="statusTitle" class="text-3xl font-extrabold leading-tight tracking-tight mb-2"></h2>
-                                <p id="msg" class="text-sm font-medium opacity-80 leading-relaxed"></p>
-                            </div>
+                            <h2 id="statusTitle" class="text-3xl font-black italic tracking-tight"></h2>
+                            <p id="statusMsg" class="text-[13px] font-bold leading-relaxed opacity-90"></p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="flex flex-col items-center space-y-8 pt-4">
-            <div class="flex flex-wrap justify-center items-center gap-6 text-[11px] font-bold text-gray-500 tracking-tighter">
-                <a href="https://check.rapzz.eu.cc" target="_blank" class="hover:text-white transition-colors border-b border-transparent hover:border-white">OFFICIAL WEBSITE</a>
-                <a href="https://whatsapp.com/channel/0029VbCXhPGLI8YdXdUg7s27" target="_blank" class="hover:text-white transition-colors border-b border-transparent hover:border-white">WHATSAPP CHANNEL</a>
+        <div class="mt-12 flex flex-col items-center gap-6">
+            <div class="flex gap-8 text-[10px] font-black text-gray-500 tracking-tighter">
+                <a href="https://check.rapzz.eu.cc" class="btn-tap hover:text-white uppercase">Website 🌐</a>
+                <a href="https://whatsapp.com/channel/0029VbCXhPGLI8YdXdUg7s27" class="btn-tap hover:text-white uppercase">WhatsApp 📲</a>
             </div>
-            <p class="text-[10px] text-white/10 tracking-[1.2em] ml-[1.2em]">RAPZ©2026</p>
+            <div class="w-10 h-1 bg-white/5 rounded-full"></div>
         </div>
-    </div>
+    </main>
 
     <script>
-        // Security: No Inspect & No Right Click
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.onkeydown = e => { if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0))) return false; };
+        window.onload = () => {
+            twemoji.parse(document.body, { folder: 'svg', ext: '.svg' });
+            setTimeout(() => {
+                document.getElementById('island').classList.add('expand');
+                setTimeout(() => document.getElementById('islandContent').classList.remove('hidden'), 300);
+            }, 500);
+        };
 
-        const modal = document.getElementById('securityModal');
-        const input = document.getElementById('emailInput');
-        const resultBox = document.getElementById('resultBox');
-        const card = document.getElementById('cardColor');
-        const label = document.getElementById('label');
-        const msg = document.getElementById('msg');
+        function closeIsland() {
+            document.getElementById('islandContent').classList.add('hidden');
+            setTimeout(() => { document.getElementById('island').classList.remove('expand'); document.getElementById('island').style.top = "-120px"; }, 200);
+        }
+
+        const email = document.getElementById('email');
+        const result = document.getElementById('result');
+        const statusCard = document.getElementById('statusCard');
+        const badge = document.getElementById('badge');
         const title = document.getElementById('statusTitle');
-        const glow = document.getElementById('glow');
+        const msg = document.getElementById('statusMsg');
 
-        window.onload = () => setTimeout(() => modal.classList.remove('hidden'), 800);
-        function closeModal() { modal.classList.add('hidden'); }
-
-        input.addEventListener('input', (e) => {
+        email.addEventListener('input', (e) => {
             const val = e.target.value.toLowerCase().trim();
             if(val.includes('@')) {
-                const domain = val.split('@')[1];
-                if(domain === "") { resultBox.classList.add('hidden'); return; }
-                
-                resultBox.classList.remove('hidden');
-                document.getElementById('domainVal').innerText = domain;
+                const dom = val.split('@')[1];
+                if(dom === "") { result.classList.add('opacity-0'); return; }
+                result.classList.remove('hidden');
+                setTimeout(() => { result.classList.add('opacity-100'); result.classList.remove('translate-y-4'); }, 10);
+                document.getElementById('domainDisplay').innerText = dom;
 
-                if(domain === 'gmail.com') {
-                    card.className = "relative overflow-hidden p-8 rounded-[38px] bg-[#34C759] text-white shadow-xl shadow-green-500/20";
-                    glow.className = "absolute -top-24 -right-24 w-56 h-56 blur-[90px] opacity-60 bg-white/30";
-                    label.className = "text-[10px] font-black bg-black text-white px-4 py-2 rounded-xl";
-                    label.innerText = "VERIFIED GOOGLE";
-                    title.innerText = "Aman!";
-                    msg.innerHTML = "Domain resmi <b>Google Mail</b>. Email ini valid dan aman digunakan.";
-                } else if (domain === 'gmaii.com' || domain === 'gmaiil.com') {
-                    card.className = "relative overflow-hidden p-8 rounded-[38px] bg-[#FF3B30] text-white shadow-xl shadow-red-500/30";
-                    glow.className = "absolute -top-24 -right-24 w-56 h-56 blur-[90px] opacity-60 bg-white/40";
-                    label.className = "text-[10px] font-black bg-white text-red-600 px-4 py-2 rounded-xl";
-                    label.innerText = "DANGER TYPO";
+                if(dom === 'gmail.com') {
+                    statusCard.className = "relative overflow-hidden p-8 rounded-[38px] bg-[#34C759] text-white";
+                    badge.innerText = "VERIFIED GOOGLE ✅";
+                    title.innerText = "AMAN!";
+                    msg.innerHTML = "Domain resmi Google terdeteksi. Aman digunakan! ✨";
+                } else if(dom === 'gmaii.com' || dom === 'gmaiil.com') {
+                    statusCard.className = "relative overflow-hidden p-8 rounded-[38px] bg-[#FF3B30] text-white animate-pulse";
+                    badge.innerText = "DANGER TYPO ⚠️";
                     title.innerText = "PENIPUAN!";
-                    msg.innerHTML = `Domain <b>${domain}</b> palsu! Penjual sengaja pakai ini biar mirip Gmail asli. <b>STOP TRANSAKSI!</b>`;
+                    msg.innerHTML = "Ini domain palsu jebakan! 🛑 <b>STOP</b>, jangan bayar.";
                 } else {
-                    card.className = "relative overflow-hidden p-8 rounded-[38px] bg-zinc-800 text-gray-300 border border-white/10 shadow-2xl";
-                    glow.className = "absolute -top-24 -right-24 w-56 h-56 blur-[90px] opacity-20 bg-blue-500";
-                    label.className = "text-[10px] font-black bg-white/10 text-white px-4 py-2 rounded-xl border border-white/10";
-                    label.innerText = "CUSTOM DOMAIN";
-                    title.innerText = "Bukan Gmail";
-                    msg.innerHTML = `Domain <b>${domain}</b> bukan milik Google. Ini adalah domain kustom/beli sendiri.`;
+                    statusCard.className = "relative overflow-hidden p-8 rounded-[38px] bg-zinc-900 border border-white/10 text-gray-400";
+                    badge.innerText = "NOT GOOGLE 👤";
+                    title.innerText = "BUKAN GMAIL";
+                    msg.innerHTML = "Email menggunakan domain kustom. Hati-hati! 🛡️";
                 }
-            } else { resultBox.classList.add('hidden'); }
+                twemoji.parse(statusCard);
+            } else {
+                result.classList.add('opacity-0');
+            }
         });
     </script>
 </body>
